@@ -1,8 +1,10 @@
 <?php 
 require('conn.php');
-//require('empModel.php');
 require_once 'hrProcess.php';
-
+session_start();
+if(isset($_SESSION["empID"])==false){
+	header("location: login.php");
+}
 ?>
 	
 
@@ -18,6 +20,12 @@ require_once 'hrProcess.php';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- <style type="text/css">	
+	#more{float:right; margin-top: 1.25em ; text-align: right; padding-right: .5em ;max-width:45%}
+	#logout{	position: fixed;	bottom: 2em;	right: 7em;	}
+</style> -->
+<link rel="stylesheet" type="text/css" href="nav.css">
+
 </head>
 <body>
 	<?php 
@@ -29,39 +37,47 @@ require_once 'hrProcess.php';
 			?>		
 		</div>
 	<?php endif ?>
+	
+	<div class="topnav">
+		<a href="hr.php">HR Home</a>
+		<a href='attendance.php' >Mark Attendance</a>
+		<a href="todayAttendance.php">Today's Attendance</a>
+		<a href="report.php">Monthly Reports</a>	
+		<a href='logout.php' >Logout</a>
+	</div>
+
 	<div class="container">
 
-
-	<h1 style="text-align: center;"></h1></br>
-	
 	<div class="row">
 	
 	<form action= "hrProcess.php" method="POST" enctype="multipart/form-data">
-		<h3>Add New Employee</h3>	
+
+		<br><br>
+		<h3>Add New Employee</h3><br>
 	
 		<input type="hidden" name="emp_id" value="<?php echo $employee->getID(); ?>">	
 	
-			<label>Name: </label>
+			<label>Name: </label><br>
 			<input type="text" placeholder="Name" name="name" value="<?php echo $employee->getName(); ?>" required><br> 
-		    <label>Login: </label>
-			<input type="text" placeholder="Login" name="login" value="<?php echo $employee->getLogin(); ?>" required><br>
-			<label>Password: </label>
+		    <label>Login: </label><br>
+			<input type="email" placeholder="Email" name="login" value="<?php echo $employee->getLogin(); ?>" required><br>
+			<label>Password: </label><br>
 			<input type="text" name="password" value="<?php echo $employee->getPassword(); ?>" required><br>
-			<label>Department: </label>
+			<label>Department: </label><br>
 			<select name="dept" value="<?php echo $employee->getDepartment(); ?>">
 				<option value="">--Select--</option>
-			  <option value="IT">IT</option>
-			  <option value="HR">HR</option>
-			  <option value="Accounts">Accounts</option>
-			  <option value="Development">Development</option>
+			 	<option value="IT">IT</option>
+			 	<option value="HR">HR</option>
+			 	<option value="Accounts">Accounts</option>
+			 	<option value="Development">Development</option>
 			</select><br>
-			<label>Salary: </label>
+			<label>Salary: </label><br>
 			<input type="Number" name="salary" value="<?php echo $employee->getSalary(); ?>" required><br>
 
-			<label>Profile Picture:</label>
+			<label>Profile Picture:</label><br>
 			<input type="file" name="picture" value="<?php echo $employee->getPicture(); ?>" required><br>
 
-			<label>Boss: </label>
+			<label>Boss: </label><br>
 			<select name="boss" >
 				<option value="">--Select--</option>
 				<!-- .........................................  -->
@@ -85,14 +101,14 @@ require_once 'hrProcess.php';
 			}
 ?>
 			</select><br>
-			<label>Designation: </label>
+			<label>Designation: </label><br>
 			<select name="designation">
 				<option value="">--Select--</option>
 			  <option value="Developer">Developer</option>
 			  <option value="HR Manager">HR Manager</option>
 			  <option value="Manager">Manager</option>
 			  <option value="CEO">CEO</option>
-			</select>
+			</select><br><br>
 
 		<div class="form-group">
 			<?php if($update==TRUE): ?>
@@ -116,11 +132,11 @@ require_once 'hrProcess.php';
 				$page1=0;
 			}
 			else{
-				$page1=($page*3)-3;
+				$page1=($page*10)-10;
 			}
 		}
 
-		$stmt = $conn->prepare("SELECT * FROM emp limit $page1,3");
+		$stmt = $conn->prepare("SELECT * FROM emp limit $page1,10");
 		$stmt->execute();
 		$data = $stmt->fetchAll();
 
@@ -142,15 +158,11 @@ require_once 'hrProcess.php';
 
 		
 			$emp_id=$row["emp_id"];
-			// $name=$row["name"];
-			// $dept=$row["dept"];
-			// $salary=$row["salary"];
-			// $boss=$row["boss"];//////////
-			// $designation=$row["designation"];
 			$picture=$row["picture"];
 
 			echo "<div>";
 			echo "Name: ".$empObj->getName()."<br>";
+			echo "Login: ".$empObj->getLogin()."<br>";
 			echo "Department: ".$empObj->getDepartment()."<br>";
 			echo "Salary: ".$empObj->getSalary()."<br>";
 			echo "Boss: ".$empObj->getBoss()."<br>";
@@ -167,7 +179,7 @@ require_once 'hrProcess.php';
 		$stmt1 = $conn->prepare("SELECT * FROM emp ");
 		$stmt1->execute();
 		$count=$stmt1->rowCount();
-		$pages=ceil($count/3);
+		$pages=ceil($count/10);
 		for($a=1;$a<=$pages;$a++){
 			echo "<a href='hr.php?page=$a' style='text-decoration: none'>$a</a>  ";
 		}

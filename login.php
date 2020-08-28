@@ -1,5 +1,6 @@
 <?php 
 require('conn.php');
+session_start();
 ?>
 <?php
 	try {
@@ -9,13 +10,22 @@ require('conn.php');
 		$login = $_POST["login"];
 		$password = $_POST["password"];
 
-		$stmt = $conn->prepare("SELECT * FROM emp where login = '$login' and password_ = '$password' ");
+		$stmt = $conn->prepare("SELECT * FROM emp where login = '$login' and password = '$password' ");
 
 		$stmt->execute();
 		$recordFound = $stmt->rowCount();
+
 		if($recordFound === 1){
-			echo "Login sucessfully";
-			header("location: hr.php");
+
+			$row = $stmt->fetch();
+			$_SESSION["empID"] = $row["emp_id"];
+
+			if($row["designation"] === "HR Manager"){
+				echo "Login sucessfully";
+				header("location: hr.php");
+			}else{
+				header("location: attendance.php");
+			}
 		}else {
 			echo"Not Login";
 		}

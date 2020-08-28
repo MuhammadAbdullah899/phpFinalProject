@@ -162,19 +162,19 @@ if(isset($_POST['update']))
 			$desgL = $employee->getDesignation();
 
 
-			$sql = "UPDATE emp SET name='$nameL' , login='$loginL' , dept='$deptL' , picture='$picL' , salary = '$salaryL' , boss='$bossL' , designation='desgL'  WHERE emp_id='$emp_id' ";
+			$sql = "UPDATE emp SET name='$nameL' , login='$loginL' , dept='$deptL' , picture='$picL' , salary = '$salaryL' , boss='$bossL' , designation='$desgL'  WHERE emp_id='$emp_id' ";
 	
 			$stmt1 = $conn->prepare($sql);
 			$stmt1->execute();
 	
 			$_SESSION['message']="Employee has been updated successfully!";
-			$_SESSION['msg_typpe']="warning";	
+			$_SESSION['msg_type']="warning";	
 		}
 
 	} catch(PDOException $e) {
 
 		$_SESSION['message']="Employee has not been updated successfully!";
-		$_SESSION['msg_typpe']="danger";
+		$_SESSION['msg_type']="danger";
 		echo "<br>" . $e->getMessage();
 	}
 	header("location: hr.php");
