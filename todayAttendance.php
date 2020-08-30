@@ -28,8 +28,8 @@ if(isset($_SESSION["empID"])==false){
 	</div><br><br><br>
 	<div class="container">
 	<?php
-		$date = date("Y-m-d");
-		//$date = "2020-08-26";
+		//$date = date("Y-m-d");
+		$date = "2020-08-26";
 		try {
 				// set the PDO error mode to exception
 			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);	

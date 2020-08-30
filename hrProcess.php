@@ -36,7 +36,6 @@ if(isset($_POST['add']))
 		{
 			$_SESSION['message']="Login already exist!";
 			$_SESSION['msg_type']="danger";
-			//unset($employee);
 		}
 		else
 		{
