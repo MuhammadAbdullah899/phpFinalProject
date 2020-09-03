@@ -11,7 +11,7 @@ Attendance Management System
 
 5. HR manager can login and see list of all employees attandence for today
 
-6, HR manager can see report of any month that how many employees were on leaves, how many were late
+6. HR manager can see report of any month that how many employees were on leaves, how many were late
 
 7. HR can add / edit / delete employee in system.
 
