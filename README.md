@@ -1,4 +1,7 @@
 # phpFinalProject
+This Repo contains the source code for the following Project in PHP.
+
+
 Attendance Management System
 
 1. Employees can login in system and mark their time in morning.
